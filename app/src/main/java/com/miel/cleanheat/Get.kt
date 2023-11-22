@@ -16,7 +16,7 @@ class Get(private val listener: OnRequestCompleteListener) :
     override fun doInBackground(vararg params: Void?): String? {
         val client = OkHttpClient()
 
-        val url = "http://44.196.28.131:8081/eventsGet"
+        val url = "http://44.196.28.131:8081/events"
 
         val request = Request.Builder()
             .url(url)
