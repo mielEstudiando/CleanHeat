@@ -1,44 +1,45 @@
 package com.miel.cleanheat
+import android.os.AsyncTask
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
-import java.net.URLEncoder
 
-class Get {
-    fun main() {
+class Get(private val listener: OnRequestCompleteListener) :
+    AsyncTask<Void, Void, String>() {
+
+    interface OnRequestCompleteListener {
+        fun onRequestComplete(result: String?)
+        fun onRequestError(error: String?)
+    }
+
+    override fun doInBackground(vararg params: Void?): String? {
         val client = OkHttpClient()
 
-        val baseUrl = "http://44.196.28.131:8081/eventsGet"
-
-        // JSON que deseamos enviar
-        val json = """
-        {
-            "ID": "TrangenderMindControl",
-        }
-    """.trimIndent()
-
-        // Codificar el JSON como parte de la URL
-        val encodedJson = URLEncoder.encode(json, "UTF-8")
-
-        // Construir la URL con el JSON codificado
-        val url = "$baseUrl?json_data=$encodedJson"
+        val url = "http://44.196.28.131:8081/eventsGet"
 
         val request = Request.Builder()
             .url(url)
             .get()
             .build()
 
-        try {
+        return try {
             val response: Response = client.newCall(request).execute()
             if (response.isSuccessful) {
-                val responseData = response.body?.string()
-                println("Respuesta exitosa: $responseData")
+                response.body?.string() // Devuelve el JSON como String
             } else {
-                println("Error en la solicitud: ${response.code}")
+                null
             }
         } catch (e: IOException) {
-            println("Excepción: ${e.message}")
+            e.message
+        }
+    }
+
+    override fun onPostExecute(result: String?) {
+        if (result != null) {
+            listener.onRequestComplete(result)
+        } else {
+            listener.onRequestError("Error en la solicitud")
         }
     }
 }

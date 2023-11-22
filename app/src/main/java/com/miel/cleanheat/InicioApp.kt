@@ -2,10 +2,29 @@ package com.miel.cleanheat
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 
-class InicioApp : AppCompatActivity() {
+class InicioApp : AppCompatActivity(), Get.OnRequestCompleteListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inicio_app)
+        val getAsyncTask = Get(this)
+        getAsyncTask.execute()
+    }
+
+    override fun onRequestComplete(result: String?) {
+        runOnUiThread {
+            // Actualizar el TextView con la respuesta del GET
+            val textView = findViewById<TextView>(R.id.textView)
+            textView.text = result ?: "No se pudo obtener la respuesta"
+        }
+    }
+
+    override fun onRequestError(error: String?) {
+        runOnUiThread {
+            // Manejar el error en el TextView
+            val textView = findViewById<TextView>(R.id.textView)
+            textView.text = "Error: $error"
+        }
     }
 }
