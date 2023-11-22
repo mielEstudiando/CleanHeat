@@ -11,11 +11,13 @@ class InicioApp : AppCompatActivity(), Get.OnRequestCompleteListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inicio_app)
         val estado = findViewById<Button>(R.id.gotoStatus)
-        val getAsyncTask = Get(this)
         estado.setOnClickListener {
+            val getAsyncTask = Get(this)
             getAsyncTask.execute()
             val datos = findViewById<TextView>(R.id.data)
-            datos.visibility=View.VISIBLE
+            if (datos.visibility==View.INVISIBLE) {
+                datos.visibility = View.VISIBLE
+            }
         }
 
     }
