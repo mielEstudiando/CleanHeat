@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gráficos</title>
+  <!-- Enlace a la librería Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+  <!-- Contenedores para los gráficos -->
+  <div id="graficoTemp"></div>
+  <div id="graficoHum"></div>
+  <div id="graficoPart"></div>
+  <div id="graficoGas"></div>
+  <div id="graficoPres"></div>
+
+  <!-- Script para obtener los datos y generar los gráficos -->
+  <script>
+    fetch("http://44.196.28.131:8081/last")
+      .then(response => response.json())
+      .then(data => {
+        console.log('Datos recibidos:', data);
+
+        const temperaturas = [];
+        const humedades = [];
+        const particulas = [];
+        const presion = [];
+        const gas = [];
+
+        data.forEach(item => {
+          temperaturas.push(item.temperature);
+          humedades.push(item.humidity);
+          presion.push(item.pressure);
+          particulas.push(item.particles);
+          gas.push(item.gas);
+        });
+
+        // Datos y diseños para cada gráfico
+        const datosTemp = [{ x: ['Dato 1', 'Dato 2', 'Dato 3', 'Dato 4', 'Dato 5', 'Dato 6', 'Dato 7', 'Dato 8', 'Dato 9', 'Dato 10', 'Dato 11', 'Dato 12', 'Dato 13', 'Dato 14', 'Dato 15'], y: temperaturas, type: 'scatter', mode: 'lines' }];
+        const datosHum = [{ x: ['Dato 1', 'Dato 2', 'Dato 3', 'Dato 4', 'Dato 5', 'Dato 6', 'Dato 7', 'Dato 8', 'Dato 9', 'Dato 10', 'Dato 11', 'Dato 12', 'Dato 13', 'Dato 14', 'Dato 15'], y: humedades, type: 'scatter', mode: 'lines' }];
+        const datosPart = [{ x: ['Dato 1', 'Dato 2', 'Dato 3', 'Dato 4', 'Dato 5', 'Dato 6', 'Dato 7', 'Dato 8', 'Dato 9', 'Dato 10', 'Dato 11', 'Dato 12', 'Dato 13', 'Dato 14', 'Dato 15'], y: particulas, type: 'scatter', mode: 'lines' }];
+        const datosPres = [{ x: ['Dato 1', 'Dato 2', 'Dato 3', 'Dato 4', 'Dato 5', 'Dato 6', 'Dato 7', 'Dato 8', 'Dato 9', 'Dato 10', 'Dato 11', 'Dato 12', 'Dato 13', 'Dato 14', 'Dato 15'], y: presion, type: 'scatter', mode: 'lines' }];
+        const datosGas = [{ x: ['Dato 1', 'Dato 2', 'Dato 3', 'Dato 4', 'Dato 5', 'Dato 6', 'Dato 7', 'Dato 8', 'Dato 9', 'Dato 10', 'Dato 11', 'Dato 12', 'Dato 13', 'Dato 14', 'Dato 15'], y: gas, type: 'scatter', mode: 'lines' }];
+
+        const diseñoTemp = { title: 'Gráfico de Temperatura', yaxis: { title: 'Temperatura' } };
+        const diseñoHum = { title: 'Gráfico de Humedad', yaxis: { title: 'Humedad' } };
+        const diseñoPres = { title: 'Gráfico de Presión', yaxis: { title: 'Presión' } };
+        const diseñoPart = { title: 'Gráfico de Partículas', yaxis: { title: 'Partículas' } };
+        const diseñoGas = { title: 'Gráfico de Gas', yaxis: { title: 'Gas' } };
+
+        // Generar los gráficos en los contenedores correspondientes
+        Plotly.newPlot('graficoTemp', datosTemp, diseñoTemp);
+        Plotly.newPlot('graficoHum', datosHum, diseñoHum);
+        Plotly.newPlot('graficoPart', datosPart, diseñoPart);
+        Plotly.newPlot('graficoPres', datosPres, diseñoPres);
+        Plotly.newPlot('graficoGas', datosGas, diseñoGas);
+      })
+      .catch(error => {
+        console.error('Error al obtener los datos:', error);
+      });
+  </script>
+</body>
+</html>
+
+

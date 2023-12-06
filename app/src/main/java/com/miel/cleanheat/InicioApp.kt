@@ -1,5 +1,6 @@
 package com.miel.cleanheat
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -18,6 +19,11 @@ class InicioApp : AppCompatActivity(), Get.OnRequestCompleteListener {
             if (datos.visibility==View.INVISIBLE) {
                 datos.visibility = View.VISIBLE
             }
+        }
+        val grafico = findViewById<Button>(R.id.gotoConfig)
+        grafico.setOnClickListener{
+            val intent = Intent(this, Grafico::class.java)
+            startActivity(intent)
         }
 
     }
